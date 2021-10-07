@@ -29,7 +29,7 @@
     </div>
     @endif
     <div id="app" class="flex items-center bg-gray-100 min-h-screen">
-        <Home/>
+        <Dashboard/>
     </div>
     <script src="{{ mix('js/app.js') }}"></script>
 </body>
