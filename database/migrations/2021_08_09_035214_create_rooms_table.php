@@ -13,6 +13,10 @@ class CreateRoomsTable extends Migration
      */
     public function up()
     {
+        // schema logic:
+        // A new row is created by the initiator.
+        // Each row represents 1 chat room irrespective of 1-to-1 chat or multiple chats.
+        // The user_id in this schema has no special function other than to identify who started the chat first.
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');

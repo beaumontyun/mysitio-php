@@ -13,6 +13,9 @@ class CreateMessagesTable extends Migration
      */
     public function up()
     {
+        // schema logic:
+        // Each 2 users will occupy a single room_id.
+        // A row is created for each new message is saved in this table.
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('room_id')->constrained('rooms');
