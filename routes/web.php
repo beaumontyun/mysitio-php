@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,10 +14,13 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/', function () {
+//     echo "hello there";
+//     return view('welcome');
+// });
+Route::post('/register', function(){
+    echo "wtf";
 });
-
 // Auth::routes();
 
 Route::view('/chat', 'chat');

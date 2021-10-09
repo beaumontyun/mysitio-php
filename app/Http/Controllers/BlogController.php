@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BlogController extends Controller
 {
@@ -23,14 +24,26 @@ class BlogController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$id)
     {
+
+        error_log($id);
         $request->validate([
             'title' => 'required',
             'body' => 'required',
         ]);
 
-        return Blog::create($request->all());
+        $fields = $request->validate([
+            'title' => 'required',
+            'body' => 'required',
+        ]);
+        return Blog::create( [
+            'title' => $fields['title'],
+            'body' => $fields['body'],
+            'user_id' => Auth::id()
+        ]);
+
+        // return Blog::create($request->all());
     }
 
     /**

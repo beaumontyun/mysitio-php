@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -16,8 +17,11 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+Route::get('/', function () {
+    return 'wtf';
+});
 // public route
+Route::post('/blogTesitng', [BlogController::class, 'imageTesting']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/blogs', [BlogController::class, 'index']);
@@ -32,11 +36,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/blogs', [BlogController::class, 'store']);
     Route::put('/blogs/{id}', [BlogController::class, 'update']);
     Route::delete('/blogs/{id}', [BlogController::class, 'destroy']);
+    Route::post('/userConfig', [UserController::class, 'edit']);
 //    Route::put();
 //    Route::delete();
 //    Route::post();
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    return $request->user('auth:sanctum');
 });
