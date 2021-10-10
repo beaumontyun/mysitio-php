@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use Illuminate\Http\Request;
@@ -25,6 +26,8 @@ Route::get('/blogs/{id}', [BlogController::class, 'show']);
 Route::get('/blogs/search/{title}', [BlogController::class, 'search']);
 //Route::delete();
 //Route::post();
+Route::get('/comments', [CommentController::class, 'index']);
+Route::post('/comments', [CommentController::class, 'store']);
 
 // protected route
 Route::group(['middleware' => ['auth:sanctum']], function () {
