@@ -19,5 +19,7 @@ class Blog extends Model
         'title',
         'body',
         'user_id',
+        'blog_image',
+        'category_id'
     ];
 }

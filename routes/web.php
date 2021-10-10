@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,18 +12,14 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-// Route::get('/', function () {
-//     echo "hello there";
-//     return view('welcome');
-// });
-Route::post('/register', function(){
-    echo "wtf";
+Route::get('/', function () {
+    echo "hello there";
+    return view('welcome');
 });
-// Auth::routes();
 
-Route::view('/chat', 'chat');
 
-Route::resource('messages', 'App\Http\Controllers\MessageController')->only([
-    'index',
-    'store'
-]);
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+require __DIR__.'/auth.php';

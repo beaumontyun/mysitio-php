@@ -65,6 +65,7 @@ class UserController extends Controller
         // $user = User::find(Auth::id());
         // $file = $request->file('file');
         $name = $file->getClientOriginalName();
+        //error_log($name);
         $imagePath = "images/usersProfile/" . $user->name;
         $file->move($imagePath, $name);
         // User::where('id','=',Auth::id())->update(['path_for_profile_pic'=> $imagePath ]);

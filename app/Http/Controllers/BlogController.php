@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\Category;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
 class BlogController extends Controller
@@ -24,27 +27,42 @@ class BlogController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request,$id)
+    public function store(Request $request)
     {
+        $user = User::find(Auth::id());
+        //error_log($id);
 
-        error_log($id);
-        $request->validate([
-            'title' => 'required',
-            'body' => 'required',
-        ]);
 
         $fields = $request->validate([
             'title' => 'required',
             'body' => 'required',
-        ]);
-        return Blog::create( [
-            'title' => $fields['title'],
-            'body' => $fields['body'],
-            'user_id' => Auth::id()
+            'category_id' => 'required',
+            'blog_image'=>'image|mimes:jpeg,png,jpg,gif,svg'
         ]);
 
-        // return Blog::create($request->all());
+        $blog_image = $request->file('blog_image');//<------- get the image
+        $image_name = $blog_image->getClientOriginalName();
+        $image_name =str_replace(' ', '_', $image_name);
+       
+       $image_path=Storage::putFileAs($image_name , $blog_image,$image_name);//<------- change the image name to their original from machine-generated code
+
+       Blog::create( [
+            'title' => $fields['title'],
+            'body' => $fields['body'],
+            'category_id' => $fields['category_id'],
+            'blog_image' => $image_path,
+            'user_id' => Auth::id()
+        ]);
+        $address= storage_path();//< -- return the default directory for storing images (see filesystems.php)
+
+        return    response()->file($address.'\app\Public/'.$image_path);
+       
     }
+
+
+
+
+
 
     /**
      * Display the specified resource.
