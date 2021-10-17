@@ -27,15 +27,18 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/blogs', [BlogController::class, 'index']);
 Route::get('/blogs/{id}', [BlogController::class, 'show']);
 Route::get('/blogs/search/{title}', [BlogController::class, 'search']);
+
 //Route::delete();
 //Route::post();
 
 // protected route
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/blogs', [BlogController::class, 'index']);
+    Route::get('/blogs/images/{id}', [BlogController::class, 'show_image']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/blogs', [BlogController::class, 'store']);
-    Route::put('/blogs/{id}', [BlogController::class, 'update']);
-    Route::delete('/blogs/{id}', [BlogController::class, 'destroy']);
+    Route::put('/blogss/{id}', [BlogController::class, 'update']);
+    Route::delete('/blogs/delete', [BlogController::class, 'destroy']);
     Route::post('/userConfig', [UserController::class, 'edit']);
 //    Route::put();
 //    Route::delete();
