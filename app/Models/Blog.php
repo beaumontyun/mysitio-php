@@ -18,6 +18,15 @@ class Blog extends Model
     protected $fillable = [
         'title',
         'body',
+        'blog_image',
         'user_id',
     ];
+
+    /**
+     * Get the comments for the blog post.
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

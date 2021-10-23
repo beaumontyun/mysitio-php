@@ -10,6 +10,13 @@ class Comment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'body'
+        'body',
+        'user_id',
+        'blog_id'
     ];
+
+    public function blog()
+    {
+        return $this->belongsTo(Blog::class);
+    }
 }

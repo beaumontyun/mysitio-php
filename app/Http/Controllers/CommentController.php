@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Comment;
+use App\Models\User;
+use App\Models\Blog;
 
 class CommentController extends Controller
 {
@@ -25,6 +27,9 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
+        $id_user = $request->user()->id;
+        $id_blog = $request->blog_id;
+
         $request->validate([
             'body' => 'required'
         ]);
@@ -40,7 +45,7 @@ class CommentController extends Controller
      */
     public function show($id)
     {
-        //
+        return Comment::find($id);
     }
 
     /**
@@ -63,6 +68,7 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return Comment::destroy($id);
+        return redirect('/')->with('success','Post deleted');
     }
 }
