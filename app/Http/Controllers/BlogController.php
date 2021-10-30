@@ -6,6 +6,7 @@ use App\Models\Blog;
 use App\Models\blogs_images;
 use App\Models\User;
 use App\Models\user_blogsimg;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;

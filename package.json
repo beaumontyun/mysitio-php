@@ -30,6 +30,9 @@
         "vue-loader": "^16.8.1"
     },
     "dependencies": {
+        "@inertiajs/inertia": "^0.10.1",
+        "@inertiajs/inertia-vue3": "^0.5.2",
+        "@inertiajs/progress": "^0.2.6",
         "alpinejs": "^3.4.2",
         "larasocket-js": "^1.0.16",
         "laravel-echo": "^1.11.2",
