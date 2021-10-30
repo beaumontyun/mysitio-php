@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BlogController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,11 +19,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/home', function() {
+    return Inertia::render('Home');
+});
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::get('/blog', [BlogController::class, 'index']);
+Route::get('/blog', [BlogController::class, 'show']);
 
 require __DIR__.'/auth.php';

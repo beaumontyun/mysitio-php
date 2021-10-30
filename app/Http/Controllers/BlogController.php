@@ -25,31 +25,60 @@ class BlogController extends Controller
         $this->address = storage_path();
     }
 
+    public function show()
+    {
+        return Inertia::render('Blog/Index', [
+            'blogs' => Blog::all()->map(function ($blog) {
+                return [
+                    'id' => $blog->id,
+                    'title' => $blog->title,
+                    'body' => $blog->body,
+                    'created_at' => $blog->created_at,
+                ];
+            })
+        ]);
+    }
+
     public function index()
     {
-        $user = User::find(Auth::id());
-
-        $get_user_blog = DB::table('user_blogsimg')
-            ->join('blogs', 'blogs.id', '=', 'user_blogsimg.blogs_id') // <-- associate the blogs with users
-            ->join('blogs_images', 'blogs_images.id', '=', 'user_blogsimg.blogs_images_id') // <-- associate the images with blog
-            ->where('user_id', $user->id)
-            ->get();
-
-        // dump($get_user_blog);
-
-        //error_log($blog_id->id);
-
-        // Blog::where('user_id', $user->id)
-        // ->where('id', $id)
-        // $image_path= $blog_id ->
-        $address = storage_path();
-        //return response()->file($address . '\app\Public/' . $image_path);
-
-        // Zipper::make('mydir/mytest12.zip')->add(['thumbnail/1461610581.jpg','thumbnail/1461610616.jpg']);
-
-        // response()->download($address . '\app\Public/' . $get_user_blog[0]->blogs_images);
-        return $get_user_blog;
+        return Inertia::render('Blog/Index', [
+            // 'filters' => Request::all('search', 'trashed'), // search feature
+            'blogs' => Auth::user()->blogs()
+                ->orderBy('id')
+                ->through(fn ($blog) => [
+                    'id' => $blog->id,
+                    'title' => $blog->title,
+                    'body' => $blog->body,
+                    'created_at' => $blog->created_at,
+                ]),
+        ]);
     }
+
+    // public function index()
+    // {
+    //     $user = User::find(Auth::id());
+
+    //     $get_user_blog = DB::table('user_blogsimg')
+    //         ->join('blogs', 'blogs.id', '=', 'user_blogsimg.blogs_id') // <-- associate the blogs with users
+    //         ->join('blogs_images', 'blogs_images.id', '=', 'user_blogsimg.blogs_images_id') // <-- associate the images with blog
+    //         ->where('user_id', $user->id)
+    //         ->get();
+
+    //     // dump($get_user_blog);
+
+    //     //error_log($blog_id->id);
+
+    //     // Blog::where('user_id', $user->id)
+    //     // ->where('id', $id)
+    //     // $image_path= $blog_id ->
+    //     $address = storage_path();
+    //     //return response()->file($address . '\app\Public/' . $image_path);
+
+    //     // Zipper::make('mydir/mytest12.zip')->add(['thumbnail/1461610581.jpg','thumbnail/1461610616.jpg']);
+
+    //     // response()->download($address . '\app\Public/' . $get_user_blog[0]->blogs_images);
+    //     return $get_user_blog;
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -84,7 +113,6 @@ class BlogController extends Controller
         $address = storage_path();
         // response()->file($address . '\app\Public/' . $image_path);
         return $image_path;
-
     }
 
     public function store(Request $request)
@@ -118,7 +146,6 @@ class BlogController extends Controller
         $address = storage_path(); //< -- return the default directory for storing images (see filesystems.php)
 
         return response()->file($address . '\app\Public/' . $image_path);
-
     }
 
     /**
@@ -153,10 +180,8 @@ class BlogController extends Controller
             error_log($image_path);
 
             $request->blog_image = $image_path;
-
         } else {
             $request->blog_image = "";
-
         }
 
         $blog = Blog::where('user_id', $user->id)
@@ -184,17 +209,14 @@ class BlogController extends Controller
                 $image = blogs_images::find($value, ['*']);
 
                 if (!is_null($image)) {
-                    $images_owned_by_user = $images_owned_by_user->where("blogs_images_id", '=', $value)->toJson()
-                    ;
+                    $images_owned_by_user = $images_owned_by_user->where("blogs_images_id", '=', $value)->toJson();
 
                     error_log("inside");
                     user_blogsimg::where(['blogs_images_id' => $image->id])
                         ->delete();
                     blogs_images::find($image->id)->delete();
                     Storage::delete($user->email . "/blogsProfiles", $value, $image->blogs_images);
-
                 }
-
             }
         }
         // user_blogsimg::delete([
@@ -204,7 +226,6 @@ class BlogController extends Controller
         // ]);
 
         return $this->index();
-
     }
 
     /**
@@ -217,5 +238,4 @@ class BlogController extends Controller
     {
         return Blog::where('title', 'ilike', '%' . $title . "%")->get();
     }
-
 }
